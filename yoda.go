@@ -26,7 +26,7 @@ func main() {
 	}
 }
 
-var ErrNoPath = errors.New("path required")
+var ErrNoPath = errors.New("Pfad erforderlich")
 
 func execInput(input string) error {
 	input = strings.TrimSuffix(input, "\n")
