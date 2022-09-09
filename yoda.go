@@ -42,6 +42,7 @@ func execInput(input string) error {
 	case "exit":
 		os.Exit(0)
 	}
+	switch args[1] {
 	case "mkdir":
 		err := os.Mkdir("testdir", 0750)
 		if err != nil && !os.IsExist(err) {
@@ -51,6 +52,8 @@ func execInput(input string) error {
 		if err != nil {
 			log.Fatal(err)
 		}
+	}
+	switch args[2] {
 	case "ls":
 		files, err := ioutil.ReadDir("")
 		if err != nil {
@@ -60,6 +63,8 @@ func execInput(input string) error {
 		for _, f := range files {
 			fmt.Println(f.Name())
 		}
+	}
+	switch args[3] {
 	case "ls-l":
 		out, err := exec.Command("ls", "-l").Output()
 		if err != nil {
@@ -69,7 +74,7 @@ func execInput(input string) error {
 		output := string(out[:])
 		fmt.Println( output)
 	}
-
+}
 	cmd := exec.Command(args[0], args[1:]...)
 
 	cmd.Stderr = os.Stderr
