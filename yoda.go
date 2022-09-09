@@ -52,7 +52,7 @@ func execInput(input string) error {
 			log.Fatal(err)
 		}
 	case "ls":
-		files, err := ioutil.ReadDir("./")
+		files, err := ioutil.ReadDir("")
 		if err != nil {
 			log.Fatal(err)
 		}
