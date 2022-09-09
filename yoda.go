@@ -6,6 +6,8 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -42,44 +44,30 @@ func execInput(input string) error {
 	case "exit":
 		os.Exit(0)
 	}
-	switch args[1] {
-	case "mkdir":
-		err := os.Mkdir("testdir", 0750)
-		if err != nil && !os.IsExist(err) {
-			log.Fatal(err)
-		}
-		err = os.WriteFile("testdir/testfile.txt", []byte("Textdatei erstellen"), 0660)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-	switch args[2] {
-	case "ls":
-		files, err := ioutil.ReadDir("")
-		if err != nil {
-			log.Fatal(err)
-		}
 
-		for _, f := range files {
-			fmt.Println(f.Name())
-		}
+	err := os.Mkdir("testdir", 0750)
+	if err != nil && !os.IsExist(err) {
+		log.Fatal(err)
 	}
-	switch args[3] {
-	case "ls-l":
-		out, err := exec.Command("ls", "-l").Output()
-		if err != nil {
-			fmt.Printf("%s", err)
-		}
-	
-		output := string(out[:])
-		fmt.Println( output)
+	err = os.WriteFile("testdir/testfile.txt", []byte("Textdatei erstellen"), 0660)
+	if err != nil {
+		log.Fatal(err)
 	}
-}
+
+	files, err := ioutil.ReadDir("/tmp/")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range files {
+		fmt.Println(file.Name(), file.IsDir())
+	}
+
 	cmd := exec.Command(args[0], args[1:]...)
 
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 
 	return cmd.Run()
-}
 
+}
